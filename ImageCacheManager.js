@@ -41,6 +41,9 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                 // console.log('ImageCacheManager: url cache hit', cacheableUrl);
                 const cachedFilePath = `${options.cacheLocation}/${fileRelativePath}`;
 
+                console.log('cachedFilePath',cachedFilePath)
+                console.log('fileRelativePath',fileRelativePath)
+
                 return fs.exists(cachedFilePath)
                     .then((exists) => {
                         if (exists) {
