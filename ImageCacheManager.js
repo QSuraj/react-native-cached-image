@@ -55,19 +55,23 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
             // url is not found in the cache or is expired
             .catch(() => {
                 const fileRelativePath = path.getImageRelativeFilePath(cacheableUrl);
-                const filePath = `${options.cacheLocation}/${fileRelativePath}`
+                let filePathBefore = `${options.cacheLocation}/${fileRelativePath}`
 
-                const fileType = fileRelativePath.substr(fileRelativePath.lastIndexOf('.') + 1);
+                let fileType = fileRelativePath.substr(fileRelativePath.lastIndexOf('.') + 1);
 
                 // remove expired file if exists
-                return fs.deleteFile(filePath)
+                return fs.deleteFile(filePathBefore)
                     // get the image to cache (download / copy / etc)
-                    .then(() => getCachedFile(filePath))
+                    .then(() => getCachedFile(filePathBefore))
                     // add to cache
-                    .then(() => urlCache.set(cacheableUrl, fileRelativePath, options.ttl))
+                    .then(( filePath ) => {
+                        filePathBefore = filePath
+                        fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
+                        urlCache.set(cacheableUrl, filePathBefore, options.ttl)
+                    })
                     // return filePath
                     .then(() => { 
-                        return { filePath, fileType } 
+                        return { filePath: filePathBefore, fileType } 
                     });
             });
     }

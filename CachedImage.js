@@ -145,7 +145,6 @@ class CachedImage extends React.Component {
 
         imageCacheManager.downloadAndCacheUrl(url, options)
             .then(cachedImagePathObject => {
-                console.log('cachedImagePathObject',cachedImagePathObject)
                 this.safeSetState({
                     cachedImagePath: cachedImagePathObject.filePath,
                     cachedImageType: cachedImagePathObject.fileType
@@ -171,6 +170,9 @@ class CachedImage extends React.Component {
         const source = (this.state.isCacheable && this.state.cachedImagePath) ? {
             uri: 'file://' + this.state.cachedImagePath
         } : this.props.source;
+        if(this.state.cachedImageType === 'gif' && Platform.OS === 'ios'){
+            console.log('gif file')
+        }
         if (this.props.fallbackSource && !this.state.cachedImagePath) {
             return this.props.renderImage({
                 ...props,
