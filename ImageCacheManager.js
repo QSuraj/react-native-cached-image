@@ -41,13 +41,12 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                 // console.log('ImageCacheManager: url cache hit', cacheableUrl);
                 const cachedFilePath = `${options.cacheLocation}/${fileRelativePath}`;
 
-                console.log('cachedFilePath',cachedFilePath)
-                console.log('fileRelativePath',fileRelativePath)
+                const ext = cachedFilePath.substr(cachedFilePath.lastIndexOf('.') + 1);
 
                 return fs.exists(cachedFilePath)
                     .then((exists) => {
                         if (exists) {
-                            return cachedFilePath
+                            return { filePath: cachedFilePath, fileType: ext }
                         } else {
                             throw new Error('file under URL stored in url cache doesn\'t exsts');
                         }
@@ -58,6 +57,11 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                 const fileRelativePath = path.getImageRelativeFilePath(cacheableUrl);
                 const filePath = `${options.cacheLocation}/${fileRelativePath}`
 
+                const fileType = fileRelativePath.substr(fileRelativePath.lastIndexOf('.') + 1);
+
+                console.log('\ninside catch fileRelativePath', fileRelativePath)
+                console.log('filePath', filePath)
+
                 // remove expired file if exists
                 return fs.deleteFile(filePath)
                     // get the image to cache (download / copy / etc)
@@ -65,7 +69,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                     // add to cache
                     .then(() => urlCache.set(cacheableUrl, fileRelativePath, options.ttl))
                     // return filePath
-                    .then(() => filePath);
+                    .then(() => { filePath, fileType });
             });
     }
 
