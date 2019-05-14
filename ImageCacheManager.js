@@ -59,9 +59,6 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
 
                 const fileType = fileRelativePath.substr(fileRelativePath.lastIndexOf('.') + 1);
 
-                console.log('\ninside catch fileRelativePath', fileRelativePath)
-                console.log('filePath', filePath)
-
                 // remove expired file if exists
                 return fs.deleteFile(filePath)
                     // get the image to cache (download / copy / etc)

@@ -144,7 +144,6 @@ class CachedImage extends React.Component {
 
         imageCacheManager.downloadAndCacheUrl(url, options)
             .then(cachedImagePathObject => {
-                console.log('cachedImagePathObject',cachedImagePathObject)
                 this.safeSetState({
                     cachedImagePath: cachedImagePathObject.filePath,
                     cachedImageType: cachedImagePathObject.fileType
@@ -152,6 +151,7 @@ class CachedImage extends React.Component {
             })
             .catch(err => {
                 // console.warn(err);
+                console.log('error', err, url)
                 this.safeSetState({
                     cachedImagePath: null,
                     isCacheable: false
