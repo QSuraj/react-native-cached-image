@@ -152,7 +152,6 @@ class CachedImage extends React.Component {
             })
             .catch(err => {
                 // console.warn(err);
-                console.log('error', err, url)
                 this.safeSetState({
                     cachedImagePath: null,
                     cachedImageType: null,
@@ -171,7 +170,12 @@ class CachedImage extends React.Component {
             uri: 'file://' + this.state.cachedImagePath
         } : this.props.source;
         if(this.state.cachedImageType === 'gif' && Platform.OS === 'ios'){
-            console.log('gif file')
+            return this.props.QWebViewGif ? this.props.QWebViewGif : this.props.renderImage({
+                ...props,
+                key: props.key || source.uri,
+                style,
+                source
+            });;
         }
         if (this.props.fallbackSource && !this.state.cachedImagePath) {
             return this.props.renderImage({
