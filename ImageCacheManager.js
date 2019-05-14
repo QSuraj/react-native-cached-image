@@ -66,7 +66,9 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                     // add to cache
                     .then(() => urlCache.set(cacheableUrl, fileRelativePath, options.ttl))
                     // return filePath
-                    .then(() => { filePath, fileType });
+                    .then(() => { 
+                        return { filePath, fileType } 
+                    });
             });
     }
 

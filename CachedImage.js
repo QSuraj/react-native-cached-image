@@ -66,7 +66,8 @@ class CachedImage extends React.Component {
         this.state = {
             isCacheable: true,
             cachedImagePath: null,
-            networkAvailable: true
+            networkAvailable: true,
+            cachedImageType: null
         };
 
         this.getImageCacheManagerOptions = this.getImageCacheManagerOptions.bind(this);
@@ -155,6 +156,7 @@ class CachedImage extends React.Component {
                 console.log('error', err, url)
                 this.safeSetState({
                     cachedImagePath: null,
+                    cachedImageType: null,
                     isCacheable: false
                 });
             });
