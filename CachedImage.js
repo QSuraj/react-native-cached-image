@@ -46,7 +46,6 @@ class CachedImage extends React.Component {
     static propTypes = {
         renderImage: PropTypes.func.isRequired,
         activityIndicatorProps: PropTypes.object.isRequired,
-
         // ImageCacheManager options
         ...ImageCacheManagerOptionsPropTypes,
     };
@@ -169,8 +168,8 @@ class CachedImage extends React.Component {
         const source = (this.state.isCacheable && this.state.cachedImagePath) ? {
             uri: 'file://' + this.state.cachedImagePath
         } : this.props.source;
-        if(this.state.cachedImageType === 'gif' && Platform.OS === 'ios'){
-            return this.props.QWebViewGif ? this.props.QWebViewGif : this.props.renderImage({
+        if(this.state.cachedImageType === 'gif' && Platform.OS === this.props.alternateOS){
+            return this.props.alternateView ? this.props.alternateView : this.props.renderImage({
                 ...props,
                 key: props.key || source.uri,
                 style,
