@@ -66,15 +66,13 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                     // add to cache
                     .then(( filePath ) => {
                         filePathBefore = filePath
-                        fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
+                        const fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
                         const fileRelativePathType = fileRelativePath.substr( fileRelativePath.lastIndexOf( '.' ) + 1 );
                         fileRelativePath = fileRelativePath.replace( fileRelativePathType, fileType );
-                        urlCache.set(cacheableUrl, fileRelativePath, options.ttl)
+                        urlCache.set(cacheableUrl, fileRelativePath, options.ttl).then(() => { 
+                            return { filePath: filePathBefore, fileType } 
+                        });
                     })
-                    // return filePath
-                    .then(() => { 
-                        return { filePath: filePathBefore, fileType } 
-                    });
             });
     }
 
