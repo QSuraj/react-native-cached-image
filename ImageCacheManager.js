@@ -67,6 +67,8 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                     .then(( filePath ) => {
                         filePathBefore = filePath
                         fileType = filePath.substr(filePath.lastIndexOf('.') + 1);
+                        const fileRelativePathType = fileRelativePath.substr( fileRelativePath.lastIndexOf( '.' ) + 1 );
+                        fileRelativePath = fileRelativePath.replace( fileRelativePathType, fileType );
                         urlCache.set(cacheableUrl, fileRelativePath, options.ttl)
                     })
                     // return filePath
