@@ -2,6 +2,8 @@
 
 const _ = require('lodash');
 
+import { Platform } from 'react-native';
+
 const RNFetchBlob = require('rn-fetch-blob').default;
 
 const {
@@ -99,7 +101,14 @@ module.exports = {
                     .fetch('GET', fromUrl, headers)
                     .then(res => {
                         const fileType = toFile.substr(toFile.lastIndexOf('.') + 1);
-                        let resFileType = res.respInfo.headers['Content-Type']
+ 
+                        let resFileType;
+                        if(Platform.OS == 'ios'){
+                            resFileType = res.respInfo.headers['Content-Type']
+                        }else{
+                            resFileType = res.respInfo.headers['content-type']
+                        }
+
                         resFileType = resFileType.substring(resFileType.indexOf("/")+1, resFileType.length);
 
                         if(fileType !== resFileType){
