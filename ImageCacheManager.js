@@ -54,10 +54,8 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
             })
             // url is not found in the cache or is expired
             .catch(() => {
-                const fileRelativePath = path.getImageRelativeFilePath(cacheableUrl);
+                let fileRelativePath = path.getImageRelativeFilePath(cacheableUrl);
                 let filePathBefore = `${options.cacheLocation}/${fileRelativePath}`
-
-                let fileType = fileRelativePath.substr(fileRelativePath.lastIndexOf('.') + 1);
 
                 // remove expired file if exists
                 return fs.deleteFile(filePathBefore)
