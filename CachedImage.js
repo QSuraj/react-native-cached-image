@@ -77,7 +77,7 @@ class CachedImage extends React.Component {
         this.renderLoader = this.renderLoader.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this._isMounted = true;
         
         this.unsubscribeNetInfo = NetInfo.addEventListener( ( state ) => {
