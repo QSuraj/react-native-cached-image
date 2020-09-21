@@ -99,7 +99,7 @@ class CachedImage extends React.Component {
         this.unsubscribeNetInfo();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_.isEqual(this.props.source, nextProps.source)) {
             this.processSource(nextProps.source);
         }
