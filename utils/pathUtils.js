@@ -1,6 +1,8 @@
 'use strict';
 
-const _ = require('lodash');
+const _isArray = require('lodash/isArray');
+const _pick = require('lodash/pick');
+const _toLower = require('lodash/toLower');
 const URL = require('url-parse');
 const SHA1 = require("crypto-js/sha1");
 
@@ -15,8 +17,8 @@ function serializeObjectKeys(obj) {
 }
 
 function getQueryForCacheKey(url, useQueryParamsInCacheKey) {
-    if (_.isArray(useQueryParamsInCacheKey)) {
-        return serializeObjectKeys(_.pick(url.query, useQueryParamsInCacheKey));
+    if (_isArray(useQueryParamsInCacheKey)) {
+        return serializeObjectKeys(_pick(url.query, useQueryParamsInCacheKey));
     }
     if (useQueryParamsInCacheKey) {
         return serializeObjectKeys(url.query);
@@ -34,7 +36,7 @@ function generateCacheKey(url, useQueryParamsInCacheKey = true) {
     const filePath = pathParts.join('/');
 
     const parts = fileName.split('.');
-    const fileType = parts.length > 1 ? _.toLower(parts.pop()) : '';
+    const fileType = parts.length > 1 ? _toLower(parts.pop()) : '';
     const type = defaultImageTypes.includes(fileType) ? fileType : 'jpg';
 
     const cacheable = filePath + fileName + type + getQueryForCacheKey(parsedUrl, useQueryParamsInCacheKey);
@@ -90,8 +92,8 @@ module.exports = {
      */
     getCacheableUrl(url, useQueryParamsInCacheKey) {
         const parsedUrl = new URL(url, null, true);
-        if (_.isArray(useQueryParamsInCacheKey)) {
-            parsedUrl.set('query', _.pick(parsedUrl.query, useQueryParamsInCacheKey));
+        if (_isArray(useQueryParamsInCacheKey)) {
+            parsedUrl.set('query', _pick(parsedUrl.query, useQueryParamsInCacheKey));
         }
         if (!useQueryParamsInCacheKey) {
             parsedUrl.set('query', {});

@@ -1,6 +1,10 @@
 'use strict';
 
-const _ = require('lodash');
+const _initial = require('lodash/initial');
+const _map = require('lodash/map');
+const _has = require('lodash/has');
+const _flattenDeep = require('lodash/flattenDeep');
+const _sumBy = require('lodash/sumBy');
 
 import { Platform } from 'react-native';
 
@@ -15,7 +19,7 @@ const activeDownloads = {};
 function getDirPath(path) {
     // if path is a file (has ext) remove it
     if (path.charAt(path.length - 4) === '.' || path.charAt(path.length - 5) === '.') {
-        return _.initial(path.split('/')).join('/');
+        return _initial(path.split('/')).join('/');
     }
     return path;
 }
@@ -53,7 +57,7 @@ function collectFilesInfo(basePath) {
             }
             return fs.ls(basePath)
                 .then(files => {
-                    const promises = _.map(files, file => {
+                    const promises = _map(files, file => {
                         return collectFilesInfo(`${basePath}/${file}`);
                     });
                     return Promise.all(promises);
@@ -89,7 +93,7 @@ module.exports = {
      */
     downloadFile(fromUrl, toFile, headers) {
         // use toFile as the key as is was created using the cacheKey
-        if (!_.has(activeDownloads, toFile)) {
+        if (!_has(activeDownloads, toFile)) {
             // using a temporary file, if the download is accidentally interrupted, it will not produce a disabled file
             const tmpFile = toFile + '.tmp';
             // create an active download for this file
@@ -207,8 +211,8 @@ module.exports = {
                 }
             })
             .then(filesInfo => {
-                const files = _.flattenDeep(filesInfo);
-                const size = _.sumBy(files, 'size');
+                const files = _flattenDeep(filesInfo);
+                const size = _sumBy(files, 'size');
                 return {
                     files,
                     size

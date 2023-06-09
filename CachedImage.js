@@ -1,6 +1,11 @@
 'use strict';
 
-const _ = require('lodash');
+const _omit = require('lodash/omit');
+const _isEqual = require('lodash/isEqual');
+const _keys = require('lodash/keys');
+const _pick = require('lodash/pick');
+const _get = require('lodash/get');
+
 const React = require('react');
 const ReactNative = require('react-native');
 
@@ -36,7 +41,7 @@ const styles = StyleSheet.create({
 });
 
 function getImageProps(props) {
-    return _.omit(props, ['source', 'defaultSource', 'fallbackSource', 'LoadingIndicator', 'activityIndicatorProps', 'style', 'useQueryParamsInCacheKey', 'renderImage', 'resolveHeaders']);
+    return _omit(props, ['source', 'defaultSource', 'fallbackSource', 'LoadingIndicator', 'activityIndicatorProps', 'style', 'useQueryParamsInCacheKey', 'renderImage', 'resolveHeaders']);
 }
 
 class CachedImage extends React.Component {
@@ -99,7 +104,7 @@ class CachedImage extends React.Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (!_.isEqual(this.props.source, nextProps.source)) {
+        if (!_isEqual(this.props.source, nextProps.source)) {
             this.processSource(nextProps.source);
         }
     }
@@ -113,7 +118,7 @@ class CachedImage extends React.Component {
     }
 
     getImageCacheManagerOptions() {
-        return _.pick(this.props, _.keys(ImageCacheManagerOptionsPropTypes));
+        return _pick(this.props, _keys(ImageCacheManagerOptionsPropTypes));
     }
 
     getImageCacheManager() {
@@ -140,7 +145,7 @@ class CachedImage extends React.Component {
     }
 
     processSource(source) {
-        const url = _.get(source, ['uri'], null);
+        const url = _get(source, ['uri'], null);
         const options = this.getImageCacheManagerOptions();
         const imageCacheManager = this.getImageCacheManager();
 
@@ -198,7 +203,7 @@ class CachedImage extends React.Component {
         const imageProps = getImageProps(this.props);
         const imageStyle = [this.props.style, styles.loaderPlaceholder];
 
-        const activityIndicatorProps = _.omit(this.props.activityIndicatorProps, ['style']);
+        const activityIndicatorProps = _omit(this.props.activityIndicatorProps, ['style']);
         const activityIndicatorStyle = this.props.activityIndicatorProps.style || styles.loader;
 
         const LoadingIndicator = this.props.loadingIndicator;

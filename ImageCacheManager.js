@@ -1,7 +1,8 @@
 'use strict';
 
-const _ = require('lodash');
-
+const _isString = require('lodash/isString');
+const _startsWith = require('lodash/startsWith');
+const _defaults = require('lodash/defaults');
 const fsUtils = require('./utils/fsUtils');
 const pathUtils = require('./utils/pathUtils');
 const MemoryCache = require('react-native-cacher/MemoryCache').default;
@@ -17,10 +18,10 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
     };
 
     // apply default options
-    _.defaults(defaultOptions, defaultDefaultOptions);
+    _defaults(defaultOptions, defaultDefaultOptions);
 
     function isCacheable(url) {
-        return _.isString(url) && (_.startsWith(url.toLowerCase(), 'http://') || _.startsWith(url.toLowerCase(), 'https://'));
+        return _isString(url) && (_startsWith(url.toLowerCase(), 'http://') || _startsWith(url.toLowerCase(), 'https://'));
     }
 
     function cacheUrl(url, options, getCachedFile) {
@@ -28,7 +29,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
             return Promise.reject(new Error('Url is not cacheable'));
         }
         // allow CachedImage to provide custom options
-        _.defaults(options, defaultOptions);
+        _defaults(options, defaultOptions);
         // cacheableUrl contains only the needed query params
         const cacheableUrl = path.getCacheableUrl(url, options.useQueryParamsInCacheKey);
         // note: urlCache may remove the entry if it expired so we need to remove the leftover file manually
@@ -115,7 +116,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
             if (!isCacheable(url)) {
                 return Promise.reject(new Error('Url is not cacheable'));
             }
-            _.defaults(options, defaultOptions);
+            _defaults(options, defaultOptions);
             const cacheableUrl = path.getCacheableUrl(url, options.useQueryParamsInCacheKey);
             const filePath = path.getImageFilePath(cacheableUrl, options.cacheLocation);
             // remove file from cache
@@ -130,7 +131,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
          * @returns {Promise}
          */
         clearCache(options = {}) {
-            _.defaults(options, defaultOptions);
+            _defaults(options, defaultOptions);
             return urlCache.flush()
                 .then(() => fs.cleanDir(options.cacheLocation));
         },
@@ -141,7 +142,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
          * @returns {Promise.<{file: Array, size: Number}>}
          */
         getCacheInfo(options = {}) {
-            _.defaults(options, defaultOptions);
+            _defaults(options, defaultOptions);
             return fs.getDirInfo(options.cacheLocation);
         },
 

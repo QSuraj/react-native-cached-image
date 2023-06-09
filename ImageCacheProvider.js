@@ -1,6 +1,9 @@
 'use strict';
 
-const _ = require('lodash');
+const _noop = require('lodash/noop');
+const _keys = require('lodash/keys');
+const _pick = require('lodash/pick');
+
 const React = require('react');
 const ReactNative = require('react-native');
 
@@ -29,7 +32,7 @@ class ImageCacheProvider extends React.Component {
     static defaultProps = {
         urlsToPreload: [],
         numberOfConcurrentPreloads: 0,
-        onPreloadComplete: _.noop,
+        onPreloadComplete: _noop,
     };
 
     static childContextTypes = {
@@ -68,7 +71,7 @@ class ImageCacheProvider extends React.Component {
     }
 
     getImageCacheManagerOptions() {
-        return _.pick(this.props, _.keys(ImageCacheManagerOptionsPropTypes));
+        return _pick(this.props, _keys(ImageCacheManagerOptionsPropTypes));
     }
 
     getImageCacheManager() {
