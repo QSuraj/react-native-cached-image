@@ -53,7 +53,8 @@
     "prop-types": "15.5.10",
     "react-native-cacher": "git+https://SurajQuizizz@bitbucket.org/SurajQuizizz/react-native-cacher.git",
     "rn-fetch-blob": "0.10.12",
-    "url-parse": "1.5.10"
+    "url-parse": "1.5.10",
+    "react-native-svg": "12.5.0"
   },
   "devDependencies": {
     "babel-jest": "^21.0.2",

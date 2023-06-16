@@ -5,6 +5,7 @@ const _isEqual = require('lodash/isEqual');
 const _keys = require('lodash/keys');
 const _pick = require('lodash/pick');
 const _get = require('lodash/get');
+import { SvgFromUri } from "react-native-svg";
 
 const React = require('react');
 const ReactNative = require('react-native');
@@ -170,11 +171,13 @@ class CachedImage extends React.Component {
         if (this.state.isCacheable && !this.state.cachedImagePath) {
             return this.renderLoader();
         }
+
         const props = getImageProps(this.props);
         const style = this.props.style || styles.image;
         const source = (this.state.isCacheable && this.state.cachedImagePath) ? {
             uri: 'file://' + this.state.cachedImagePath
         } : this.props.source;
+
         if(this.state.cachedImageType === 'gif' && Platform.OS === this.props.alternateOS){
             return this.props.alternateView ? this.props.alternateView : this.props.renderImage({
                 ...props,
@@ -183,6 +186,17 @@ class CachedImage extends React.Component {
                 source
             });;
         }
+
+        if(this.state.cachedImageType === 'svg+xml'){
+            return (
+                <SvgFromUri
+                    {...props}
+                    uri={source.uri}
+                    style={style}
+                    key={props.key || source.uri} />
+            );
+        }
+
         if (this.props.fallbackSource && !this.state.cachedImagePath) {
             return this.props.renderImage({
                 ...props,
@@ -191,6 +205,7 @@ class CachedImage extends React.Component {
                 source: this.props.fallbackSource
             });
         }
+
         return this.props.renderImage({
             ...props,
             key: props.key || source.uri,
