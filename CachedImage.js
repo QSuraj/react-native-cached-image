@@ -5,8 +5,7 @@ const _isEqual = require('lodash/isEqual');
 const _keys = require('lodash/keys');
 const _pick = require('lodash/pick');
 const _get = require('lodash/get');
-import { SvgFromUri } from "react-native-svg";
-
+import { Svg, SvgFromUri, SvgFromXml, SvgUri, SvgXml } from "react-native-svg";
 const React = require('react');
 const ReactNative = require('react-native');
 
@@ -26,6 +25,8 @@ const {
     StyleSheet,
 } = ReactNative;
 import NetInfo from "@react-native-community/netinfo";
+import RNFetchBlob from "rn-fetch-blob";
+import { err, fetchText } from "react-native-svg/src/xml";
 
 const styles = StyleSheet.create({
     image: {
@@ -70,7 +71,8 @@ class CachedImage extends React.Component {
             isCacheable: true,
             cachedImagePath: null,
             networkAvailable: true,
-            cachedImageType: null
+            cachedImageType: null,
+            xml: null
         };
 
         this.getImageCacheManagerOptions = this.getImageCacheManagerOptions.bind(this);
@@ -84,7 +86,7 @@ class CachedImage extends React.Component {
     componentDidMount(){
         this.cachedImageRef = React.createRef();
         this._isMounted = true;
-        
+
         this.unsubscribeNetInfo = NetInfo.addEventListener( ( state ) => {
             this.handleConnectivityChange( state.isConnected );
         } );
@@ -158,13 +160,32 @@ class CachedImage extends React.Component {
                 });
             })
             .catch(err => {
-                // console.warn(err);
+                console.error(err);
                 this.safeSetState({
                     cachedImagePath: null,
                     cachedImageType: null,
                     isCacheable: false
                 });
             });
+    }
+
+    async readXmlFromFile(){
+      const source = (this.state.isCacheable && this.state.cachedImagePath) ? {
+        uri: 'file://' + this.state.cachedImagePath
+    } : this.props.source;
+      await fetch(source.uri)
+      .then((response) => response.text())
+      .then((xml) =>{
+        this.setState({xml})
+      }).catch((err)=>{
+        console.log("error", err)
+      });
+    }
+
+    componentDidUpdate(prevProps, prevState){
+      if( this.state.cachedImageType === 'svg+xml' && this.state.xml === null ){
+        this.readXmlFromFile()
+      }
     }
 
     render() {
@@ -186,13 +207,15 @@ class CachedImage extends React.Component {
                 source
             });;
         }
-
-        if(this.state.cachedImageType === 'svg+xml'){
+        
+        if(this.state.cachedImageType === 'svg+xml' && this.state.xml !== null){
             return (
-                <SvgFromUri
+                <SvgXml
                     {...props}
-                    uri={source.uri}
+                    xml={this.state.xml}
                     style={style}
+                    width="100%"
+                    height="100%"
                     key={props.key || source.uri} />
             );
         }
