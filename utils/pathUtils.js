@@ -3,6 +3,7 @@
 const _isArray = require('lodash/isArray');
 const _pick = require('lodash/pick');
 const _toLower = require('lodash/toLower');
+const _ = require('lodash');
 const URL = require('url-parse');
 const SHA1 = require("crypto-js/sha1");
 

@@ -49,7 +49,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
                         if (exists) {
                             return { filePath: cachedFilePath, fileType: ext }
                         } else {
-                            throw new Error('file under URL stored in url cache doesn\'t exsts');
+                            throw new Error('file under URL stored in url cache doesn\'t exists');
                         }
                     });
             })
