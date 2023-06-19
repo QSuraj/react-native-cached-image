@@ -5,7 +5,7 @@ const _isEqual = require('lodash/isEqual');
 const _keys = require('lodash/keys');
 const _pick = require('lodash/pick');
 const _get = require('lodash/get');
-import { Canvas, ImageSVG, Skia } from "@shopify/react-native-skia";
+import { Svg, SvgFromUri, SvgFromXml, SvgUri, SvgXml } from "react-native-svg";
 const React = require('react');
 const ReactNative = require('react-native');
 
@@ -176,7 +176,6 @@ class CachedImage extends React.Component {
       await fetch(source.uri)
       .then((response) => response.text())
       .then((xml) =>{
-        xml = Skia.SVG.MakeFromString(xml)!;
         this.setState({xml})
       }).catch((err)=>{
         console.log("error", err)
@@ -211,15 +210,13 @@ class CachedImage extends React.Component {
         
         if(this.state.cachedImageType === 'svg+xml' && this.state.xml !== null){
             return (
-                <Canvas style={{ flex: 1 }}>
-      <ImageSVG
-        svg={svg}
-        x={0}
-        y={0}
-        width={290}
-        height={500}
-      />
-    </Canvas>
+                <SvgXml
+                    {...props}
+                    xml={this.state.xml}
+                    style={style}
+                    width="100%"
+                    height="100%"
+                    key={props.key || source.uri} />
             );
         }
 
