@@ -177,15 +177,6 @@ class CachedImage extends React.Component {
       await fetch(source.uri)
       .then((response) => response.text())
       .then((xml) =>{
-        const inputBuffer =  Buffer.from(xml);
-        const pngImage  = sharp(inputBuffer)
-        .toFile('output.png')
-        .then(info => { 
-            console.log('SUCCESS', info);
-         })
-        .catch(err => { 
-            console.log('error', error);
-         });
         this.setState({xml})
       }).catch((err)=>{
         console.log("error", err)
