@@ -52,9 +52,10 @@
     "lodash": "4.17.4",
     "prop-types": "15.5.10",
     "react-native-cacher": "git+https://SurajQuizizz@bitbucket.org/SurajQuizizz/react-native-cacher.git",
+    "react-native-svg": "13.9.0",
     "rn-fetch-blob": "0.10.12",
-    "url-parse": "1.5.10",
-    "react-native-svg": "13.9.0"
+    "sharp": "^0.32.1",
+    "url-parse": "1.5.10"
   },
   "devDependencies": {
     "babel-jest": "^21.0.2",

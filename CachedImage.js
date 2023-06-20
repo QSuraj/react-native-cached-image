@@ -8,6 +8,7 @@ const _get = require('lodash/get');
 import { Svg, SvgFromUri, SvgFromXml, SvgUri, SvgXml } from "react-native-svg";
 const React = require('react');
 const ReactNative = require('react-native');
+const sharp = require('sharp');
 
 const PropTypes = require('prop-types');
 
@@ -176,6 +177,15 @@ class CachedImage extends React.Component {
       await fetch(source.uri)
       .then((response) => response.text())
       .then((xml) =>{
+        const inputBuffer =  Buffer.from(xml);
+        const pngImage  = sharp(inputBuffer)
+        .toFile('output.png')
+        .then(info => { 
+            console.log('SUCCESS', info);
+         })
+        .catch(err => { 
+            console.log('error', error);
+         });
         this.setState({xml})
       }).catch((err)=>{
         console.log("error", err)
