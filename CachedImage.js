@@ -5,7 +5,6 @@ const _isEqual = require('lodash/isEqual');
 const _keys = require('lodash/keys');
 const _pick = require('lodash/pick');
 const _get = require('lodash/get');
-import { Svg, SvgFromUri, SvgFromXml, SvgUri, SvgXml } from "react-native-svg";
 const React = require('react');
 const ReactNative = require('react-native');
 
@@ -205,19 +204,7 @@ class CachedImage extends React.Component {
                 key: props.key || source.uri,
                 style,
                 source
-            });;
-        }
-        
-        if(this.state.cachedImageType === 'svg+xml' && this.state.xml !== null){
-            return (
-                <SvgXml
-                    {...props}
-                    xml={this.state.xml}
-                    style={style}
-                    width="100%"
-                    height="100%"
-                    key={props.key || source.uri} />
-            );
+            });
         }
 
         if (this.props.fallbackSource && !this.state.cachedImagePath) {
