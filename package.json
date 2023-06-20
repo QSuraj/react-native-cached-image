@@ -54,9 +54,8 @@
     "react-native-cacher": "git+https://SurajQuizizz@bitbucket.org/SurajQuizizz/react-native-cacher.git",
     "react-native-svg": "13.9.0",
     "rn-fetch-blob": "0.10.12",
-    "sharp": "^0.32.1",
     "url-parse": "1.5.10",
-    "util": "0.12.5"
+    "sharp": "^0.32.1"
   },
   "devDependencies": {
     "babel-jest": "^21.0.2",
