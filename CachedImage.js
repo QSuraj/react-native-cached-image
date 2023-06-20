@@ -8,7 +8,6 @@ const _get = require('lodash/get');
 import { Svg, SvgFromUri, SvgFromXml, SvgUri, SvgXml } from "react-native-svg";
 const React = require('react');
 const ReactNative = require('react-native');
-const sharp = require('sharp');
 
 const PropTypes = require('prop-types');
 
