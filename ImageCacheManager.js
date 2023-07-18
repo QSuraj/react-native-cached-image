@@ -26,7 +26,7 @@ module.exports = (defaultOptions = {}, urlCache = MemoryCache, fs = fsUtils, pat
 
     function cacheUrl(url, options, getCachedFile) {
         if (!isCacheable(url)) {
-            return Promise.reject(new Error('Url is not cacheable'));
+            return Promise.reject(new Error(`Url is not cacheable ${url}`));
         }
         // allow CachedImage to provide custom options
         _defaults(options, defaultOptions);
