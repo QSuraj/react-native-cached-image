@@ -204,7 +204,7 @@ class CachedImage extends React.Component {
       const source = (this.state.isCacheable && this.state.cachedImagePath) ? {
         uri: 'file://' + this.state.cachedImagePath
     } : this.props.source;
-      await uriToBlob(source.uri)
+      await this.uriToBlob(source.uri)
       .then((response) => response.text())
       .then((xml) =>{
         this.setState({xml})
